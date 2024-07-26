@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { sample } from "../../utils";
 import { WORDS } from "../../data";
@@ -7,14 +7,14 @@ import { GuessResults } from "../GuessResults";
 import { checkGuess } from "../../game-helpers";
 import { NUM_OF_GUESSES_ALLOWED } from "../../constants";
 
-// Pick a random word on every pageload.
-const answer = sample(WORDS);
-// To make debugging easier, we'll log the solution in the console.
-console.info({ answer });
-
 function Game() {
+  const [answer, setAnswer] = useState(() => sample(WORDS));
   const [guesses, setGuesses] = useState([]);
   const [status, setStatus] = useState(undefined);
+
+  useEffect(() => {
+    console.info({ answer });
+  }, [answer]);
 
   const handleSubmit = (value) => {
     const nextGuesses = [
@@ -30,6 +30,12 @@ function Game() {
     }
   };
 
+  const handleRestart = () => {
+    setAnswer(sample(WORDS));
+    setGuesses([]);
+    setStatus(undefined);
+  };
+
   return (
     <>
       <GuessResults items={guesses} />
@@ -38,13 +44,20 @@ function Game() {
         onSubmit={handleSubmit}
         disabled={status !== undefined}
       />
-      {status === "won" && <HappyBanner numberOfGuesses={guesses.length} />}
-      {status === "lost" && <SadBanner answer={answer} />}
+      {status === "won" && (
+        <HappyBanner
+          numberOfGuesses={guesses.length}
+          onRestart={handleRestart}
+        />
+      )}
+      {status === "lost" && (
+        <SadBanner answer={answer} onRestart={handleRestart} />
+      )}
     </>
   );
 }
 
-const HappyBanner = ({ numberOfGuesses }) => {
+const HappyBanner = ({ numberOfGuesses, onRestart }) => {
   return (
     <div className="happy banner">
       <p>
@@ -52,17 +65,23 @@ const HappyBanner = ({ numberOfGuesses }) => {
         <strong>
           {numberOfGuesses === 1 ? `one guess` : `${numberOfGuesses} guesses`}
         </strong>
-        .
+        .{" "}
+        <button className="banner-button" onClick={() => onRestart()}>
+          Restart Game
+        </button>
       </p>
     </div>
   );
 };
 
-const SadBanner = ({ answer }) => {
+const SadBanner = ({ answer, onRestart }) => {
   return (
     <div className="sad banner">
       <p>
-        Sorry, the correct answer is <strong>{answer}</strong>.
+        Sorry, the correct answer is <strong>{answer}</strong>.{" "}
+        <button className="banner-button" onClick={() => onRestart()}>
+          Restart Game
+        </button>
       </p>
     </div>
   );
