@@ -32,7 +32,7 @@ export const GuessInput = ({ guesses, onSubmit, disabled = false }) => {
         required
         disabled={disabled}
         pattern={`^[A-Z]{${WORD_LENGTH}}$`}
-        title="Enter a five-letter word"
+        title={`Enter a ${WORD_LENGTH}-letter word`}
         value={value}
         onChange={handleChange}
       />
