@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { WORD_LENGTH } from "../../constants";
+import { backspace, Keyboard } from "../Keyboard";
 
-export const GuessInput = ({ onSubmit, disabled = false }) => {
+export const GuessInput = ({ guesses, onSubmit, disabled = false }) => {
   const [value, setValue] = useState("");
 
   const handleChange = (event) => {
@@ -12,6 +13,14 @@ export const GuessInput = ({ onSubmit, disabled = false }) => {
     event.preventDefault();
     onSubmit(value);
     setValue("");
+  };
+
+  const handleClick = (character) => {
+    if (character === backspace) {
+      setValue(value.slice(0, -1));
+    } else {
+      setValue(value + character.toUpperCase());
+    }
   };
 
   return (
@@ -27,6 +36,7 @@ export const GuessInput = ({ onSubmit, disabled = false }) => {
         value={value}
         onChange={handleChange}
       />
+      <Keyboard guesses={guesses} disabled={disabled} onClick={handleClick} />
     </form>
   );
 };

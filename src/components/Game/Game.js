@@ -33,7 +33,11 @@ function Game() {
   return (
     <>
       <GuessResults items={guesses} />
-      <GuessInput onSubmit={handleSubmit} disabled={status !== undefined} />
+      <GuessInput
+        guesses={guesses}
+        onSubmit={handleSubmit}
+        disabled={status !== undefined}
+      />
       {status === "won" && <HappyBanner numberOfGuesses={guesses.length} />}
       {status === "lost" && <SadBanner answer={answer} />}
     </>
