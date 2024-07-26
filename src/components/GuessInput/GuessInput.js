@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { WORD_LENGTH } from "../../constants";
 
-export const GuessInput = ({ onSubmit }) => {
+export const GuessInput = ({ onSubmit, disabled = false }) => {
   const [value, setValue] = useState("");
 
   const handleChange = (event) => {
@@ -21,6 +21,7 @@ export const GuessInput = ({ onSubmit }) => {
         id="guess-input"
         type="text"
         required
+        disabled={disabled}
         pattern={`^[A-Z]{${WORD_LENGTH}}$`}
         title="Enter a five-letter word"
         value={value}
