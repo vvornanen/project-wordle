@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const GuessInput = () => {
+export const GuessInput = ({ onSubmit }) => {
   const [value, setValue] = useState("");
 
   const handleChange = (event) => {
@@ -9,7 +9,7 @@ export const GuessInput = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log({ guess: value });
+    onSubmit(value);
     setValue("");
   };
 
