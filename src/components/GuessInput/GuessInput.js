@@ -31,6 +31,8 @@ export const GuessInput = ({ guesses, onSubmit, disabled = false }) => {
         type="text"
         required
         disabled={disabled}
+        minLength={WORD_LENGTH}
+        maxLength={WORD_LENGTH}
         pattern={`^[A-Z]{${WORD_LENGTH}}$`}
         title={`Enter a ${WORD_LENGTH}-letter word`}
         value={value}
